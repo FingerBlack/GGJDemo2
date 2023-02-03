@@ -9,11 +9,14 @@ public class spawnBehavior : MonoBehaviour
     public GameObject roots;
     public int spawnRange = 100;
     public int spawnGap = 10;
-    public int numPerSpawn = 2;
+    public int numPerSpawn = 1;
+    public int minBlockPerSide = 10;
+    public int blockSizeIncreaseRate = 2;
 
 
     private int lowBound = 0;
     private int highBound = 0;
+    private float resourseBlockLength = 0;
 
 
     // Start is called before the first frame update
@@ -22,7 +25,7 @@ public class spawnBehavior : MonoBehaviour
 
 
         highBound = spawnGap;
-
+        resourseBlockLength = resorsePrefeb.transform.localScale.x;
     }
 
     // Update is called once per frame
@@ -50,7 +53,14 @@ public class spawnBehavior : MonoBehaviour
 
                 //spawn resourse
                 GameObject Resourse = GameObject.Find("/Resourse");
-                GameObject obj = Instantiate(resorsePrefeb, roots.transform.position + new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+                for(int i = 0; i < minBlockPerSide; i++)
+                {
+                    for (int j = 0; j < minBlockPerSide; j++)
+                    {
+                        GameObject obj = Instantiate(resorsePrefeb, roots.transform.position + new Vector3(x+i* resourseBlockLength, y+j* resourseBlockLength, 0), Quaternion.identity) as GameObject;
+                    }
+                }
+                //GameObject obj = Instantiate(resorsePrefeb, roots.transform.position + new Vector3(x, y, 0), Quaternion.identity) as GameObject;
 
 
                 //Debug.Log("spawned at: " + x + " " + y);
@@ -61,6 +71,8 @@ public class spawnBehavior : MonoBehaviour
             // enlarge hollow
             highBound += spawnGap;
             lowBound += spawnGap;
+
+            minBlockPerSide+=blockSizeIncreaseRate;
 
 
         }
